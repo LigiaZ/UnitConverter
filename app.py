@@ -72,7 +72,7 @@ def kg_to_pounds(kg):
 # Categories and units
 categories = {
     "Temperature": ["Celsius", "Fahrenheit", "Kelvin"],
-    "Length": ["Kilometers", "Miles", "Yards", "Meters", "Feet"],
+    "Length": ["KM", "Miles", "Yards", "Meters", "Feet"],
     "Volume": ["Milliliters", "Ounces", "Liters", "Gallons"],
     "Weight": ["Grams", "Ounces", "Kilograms", "Pounds"]
 }
@@ -91,11 +91,11 @@ def convert_units(value, from_unit, to_unit, category):
         else:
             return value  # Same unit
     elif category == "Length":
-        if from_unit == "Kilometers" and to_unit == "Miles":
+        if from_unit == "KM" and to_unit == "Miles":
             return km_to_miles(value)
-        elif from_unit == "Miles" and to_unit == "Kilometers":
+        elif from_unit == "Miles" and to_unit == "KM":
             return miles_to_km(value)
-        elif from_unit == "Kilometers" and to_unit == "Yards":
+        elif from_unit == "KM" and to_unit == "Yards":
             return km_to_yards(value)
         elif from_unit == "Meters" and to_unit == "Feet":
             return meters_to_feet(value)
