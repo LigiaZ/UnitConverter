@@ -1,4 +1,9 @@
 # UnitConverter
+<<<<<<< HEAD
+=======
+Unit converter project with my husband
+Accepted the invite to the repo
+>>>>>>> 50dec1136999fdd85762875f23d9b9ad0809ce4b
 
 ## Description
 A web-based unit converter built with Python and Streamlit. Converts between various units in temperature, length, volume, and weight categories with an intuitive interface and real-time calculations.
