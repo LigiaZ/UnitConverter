@@ -31,6 +31,7 @@ h1, h2, h3 {
 """, unsafe_allow_html=True)
 
 st.title("Unit Converter")
+st.write("Welcome to the Unit Converter app! Choose a category and start converting units.")
 
 # Unit conversion functions
 def celsius_to_fahrenheit(c):
@@ -68,6 +69,49 @@ def grams_to_ounces(g):
 
 def kg_to_pounds(kg):
     return kg * 2.20462
+
+def check_temperature(celsius):
+    if not isinstance(celsius, (int, float)):
+        return "Invalid input: temperature must be a number."
+    if celsius > 30:
+        return "It's too hot! 🔥"
+    elif celsius < 0:
+        return "It's too cold! ❄️"
+    else:
+        return "The temperature is comfortable."
+
+def temp_to_color(temp, min_temp=-100, max_temp=100):
+    # Normalize temperature to 0-1
+    norm = (temp - min_temp) / (max_temp - min_temp)
+    norm = max(0, min(1, norm))  # Clamp to [0, 1]
+    # Hue from 240° (blue) to 0° (red)
+    hue = 240 - (240 * norm)
+    # Saturation 100%, Lightness 50%
+    return f"hsl({hue:.0f}, 100%, 50%)"
+
+def display_temperature_gradient(temp_celsius):
+    min_temp = -100
+    max_temp = 100
+    # Calculate position as percentage from left (0% = cold, 100% = hot)
+    position = ((temp_celsius - min_temp) / (max_temp - min_temp)) * 100
+    position = max(0, min(100, position))  # Clamp
+    
+    # HTML for horizontal gradient bar with marker
+    gradient_html = f"""
+    <div style="margin-top: 20px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <span>-100°C (Cold)</span>
+            <span>100°C (Hot)</span>
+        </div>
+        <div style="height: 30px; width: 100%; background: linear-gradient(to right, #00BFFF, #00FF00, #FFFF00, #FF0000); position: relative; border-radius: 15px; border: 1px solid #ccc;">
+            <div style="position: absolute; left: {position:.1f}%; top: -5px; width: 4px; height: 40px; background: black; transform: translateX(-50%); border: 1px solid white;"></div>
+        </div>
+        <div style="text-align: center; margin-top: 10px; font-weight: bold;">
+            Current: {temp_celsius:.1f}°C
+        </div>
+    </div>
+    """
+    st.markdown(gradient_html, unsafe_allow_html=True)
 
 # Categories and units
 categories = {
@@ -131,3 +175,7 @@ value = st.number_input("Enter Value", value=0.0)
 if st.button("Convert"):
     result = convert_units(value, from_unit, to_unit, category)
     st.success(f"{value} {from_unit} = {result:.4f} {to_unit}")
+    if category == "Temperature" and to_unit == "Celsius":
+        message = check_temperature(result)
+        st.info(message)
+        display_temperature_gradient(result)
